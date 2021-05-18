@@ -1,2 +1,2 @@
 # otrs-docker
-OTRS community edition Docker image
+OTRS community edition docker image
