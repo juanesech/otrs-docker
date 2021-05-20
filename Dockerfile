@@ -43,6 +43,7 @@ RUN perl /opt/otrs/bin/otrs.CheckModules.pl
 
 #OTRS user setup
 RUN useradd -d /opt/otrs -c 'OTRS user' otrs \
+    && groupadd www \
     && usermod -G www otrs
 
 #Activate default config file
@@ -56,8 +57,12 @@ RUN perl -cw /opt/otrs/bin/cgi-bin/index.pl \
 #Apache setup
 RUN ln -s /opt/otrs/scripts/apache2-httpd.include.conf /etc/apache2/sites-enabled/zzz_otrs.conf \
     && a2enmod perl \
-    && shell> a2enmod version \
     && a2enmod deflate \
     && a2enmod filter \
     && a2enmod headers \
     && /opt/otrs/bin/otrs.SetPermissions.pl
+
+#Copy start script
+COPY scripts/start.sh start.sh
+
+CMD ["sh", "start.sh"]
